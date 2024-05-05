@@ -39,8 +39,8 @@ class HuffmanCoding:
         end_time = time.time()
 
         # Calculate sizes in megabytes and print
-        original_size = os.path.getsize(self.input_file_path) / 1024**2
-        compressed_size = os.path.getsize(self.compressed_file_path) / 1024**2
+        original_size = os.path.getsize(self.input_file_path) / 1e6 
+        compressed_size = os.path.getsize(self.compressed_file_path) / 1e6
         compression_time = end_time - start_time
         compression_ratio = original_size / compressed_size
 

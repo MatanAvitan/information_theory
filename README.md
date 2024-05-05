@@ -1,5 +1,5 @@
 # Information Theory Final Project
-## Authors: Yoav Katz, Matan Avitan
+## Authors: Yoav Katzav, Matan Avitan
 
 Run:
 
