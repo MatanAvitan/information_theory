@@ -6,9 +6,11 @@ import time
 from consts import INPUT_FILE_PATH, COMPRESSED_FILE_PATH, DECOMPRESSED_FILE_PATH
 
 class HuffmanCoding:
-    def __init__(self, input_file_path, output_file_path):
+    def __init__(self, input_file_path, 
+                 compressed_file_path, decompressed_file_path):
         self.input_file_path = input_file_path
-        self.output_file_path = output_file_path
+        self.compressed_file_path = compressed_file_path
+        self.decompressed_file_path = decompressed_file_path
 
     def build_huffman_tree(self, frequency):
         heap = [[weight, [symbol, ""]] for symbol, weight in frequency.items()]
@@ -25,20 +27,20 @@ class HuffmanCoding:
 
     def compress(self):
         start_time = time.time()
-        with open(self.input_file_path, 'r') as file:
+        with open(self.input_file_path, 'r', encoding='utf-8') as file:
             text = file.read()
             frequency = Counter(text)
         huffman_tree = self.build_huffman_tree(frequency)
         huffman_code = {symbol: code for symbol, code in huffman_tree}
         binary_string = ''.join(huffman_code[symbol] for symbol in text)
-        compressed = bitarray(binary_string)
-        with open(self.output_file_path, 'wb') as file:
-            compressed.tofile(file)
+        compressed = bitarray(binary_string)   
+        with open(self.compressed_file_path, 'wb') as file:
+            compressed.tofile(file) 
         end_time = time.time()
 
         # Calculate sizes in megabytes and print
         original_size = os.path.getsize(self.input_file_path) / 1024**2
-        compressed_size = os.path.getsize(self.output_file_path) / 1024**2
+        compressed_size = os.path.getsize(self.decompressed_file_path) / 1024**2
         compression_time = end_time - start_time
         compression_ratio = original_size / compressed_size
 
@@ -50,34 +52,30 @@ class HuffmanCoding:
 
     def decompress(self, huffman_code):
         start_time = time.time()
-        with open(self.input_file_path, 'rb') as file:
+        with open(self.compressed_file_path, 'rb') as file:
             compressed = bitarray()
-            compressed.fromfile(file)
+            compressed.fromfile(file) 
         reverse_huffman_code = {v: k for k, v in huffman_code.items()}
         binary_string = compressed.to01()
         current_code = ""
         decompressed_text = ""
+        
         for digit in binary_string:
             current_code += digit
             if current_code in reverse_huffman_code:
                 character = reverse_huffman_code[current_code]
                 decompressed_text += character
                 current_code = ""
-        with open(self.output_file_path, 'w') as file:
+        
+        with open(self.decompressed_file_path, 'w') as file:
             file.write(decompressed_text)
         end_time = time.time()
         decompression_time = end_time - start_time
         print(f"Decompression time: {decompression_time:.4f} seconds")
 
 # Example usage
-input_file = INPUT_FILE_PATH  # Path to the input text file
-compressed_file = COMPRESSED_FILE_PATH
-decompressed_file = DECOMPRESSED_FILE_PATH
-huffman = HuffmanCoding(input_file, compressed_file)
-
+huffman = HuffmanCoding(INPUT_FILE_PATH, COMPRESSED_FILE_PATH, DECOMPRESSED_FILE_PATH)
 # Compression
 huffman_code = huffman.compress()
-
 # Decompression
-huffman = HuffmanCoding(compressed_file, decompressed_file)
 huffman.decompress(huffman_code)
