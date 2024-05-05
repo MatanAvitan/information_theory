@@ -9,7 +9,6 @@ lz77.compress_file()
 # Decompress the file
 lz77.decompress_file()
 print('Compressing using HuffmanCoding')
-# Example usage
 huffman = HuffmanCoding(INPUT_FILE_PATH, COMPRESSED_FILE_PATH, DECOMPRESSED_FILE_PATH)
 # Compression
 huffman_code = huffman.compress()

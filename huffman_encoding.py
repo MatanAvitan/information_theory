@@ -73,7 +73,6 @@ class HuffmanCoding:
         decompression_time = end_time - start_time
         print(f"Decompression time: {decompression_time:.4f} seconds")
 
-# Example usage
 huffman = HuffmanCoding(INPUT_FILE_PATH, COMPRESSED_FILE_PATH, DECOMPRESSED_FILE_PATH)
 # Compression
 huffman_code = huffman.compress()

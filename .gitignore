@@ -1,4 +1,4 @@
 data/compressed.txt
 data/decompressed.txt
 .git/
-__pycache/
+__pychache__/
