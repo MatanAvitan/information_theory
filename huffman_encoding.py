@@ -27,7 +27,7 @@ class HuffmanCoding:
 
     def compress(self):
         start_time = time.time()
-        with open(self.input_file_path, 'r', encoding='utf-8') as file:
+        with open(self.input_file_path, 'r', encoding='utf-8', errors='replace') as file:
             text = file.read()
             frequency = Counter(text)
         huffman_tree = self.build_huffman_tree(frequency)
@@ -40,7 +40,7 @@ class HuffmanCoding:
 
         # Calculate sizes in megabytes and print
         original_size = os.path.getsize(self.input_file_path) / 1024**2
-        compressed_size = os.path.getsize(self.decompressed_file_path) / 1024**2
+        compressed_size = os.path.getsize(self.compressed_file_path) / 1024**2
         compression_time = end_time - start_time
         compression_ratio = original_size / compressed_size
 
