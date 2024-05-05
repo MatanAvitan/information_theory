@@ -21,11 +21,11 @@ class LZ77(object):
 
         end_time = time.time()
         compression_time = end_time - start_time
-        original_size = os.path.getsize(self.input_file_path)
-        compressed_size = os.path.getsize(self.output_file_path)
+        original_size = os.path.getsize(self.input_file_path) / 1024**2
+        compressed_size = os.path.getsize(self.compressed_file_path) / 1024**2
 
-        print(f"Original size: {original_size} bytes")
-        print(f"Compressed size: {compressed_size} bytes")
+        print(f"Original size: {original_size} megabytes")
+        print(f"Compressed size: {compressed_size} megabyte")
         print(f"Compression ratio: {original_size / compressed_size:.2f}")
         print(f"Compression time: {compression_time:.4f} seconds")
 
@@ -48,5 +48,5 @@ lz77 = LZ77(INPUT_FILE_PATH, COMPRESSED_FILE_PATH, DECOMPRESSED_FILE_PATH)
 # Compress the file
 lz77.compress_file()
 # Decompress the file
-lz77.compress_file()
+lz77.decompress_file()
 
