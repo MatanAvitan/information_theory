@@ -3,8 +3,13 @@ import heapq
 from collections import Counter
 from bitarray import bitarray  # Install this package using 'pip install bitarray'
 import time
+from consts import ENCODING_SAMPLE_PATH, COMPRESSED_FILE_PATH
 
-class HuffmanCoding:
+class HuffmanCoding(object):
+    def __init__(self, input_file_path, output_file_path):
+        self.input_file_path = input_file_path
+        self.output_file_path = output_file_path
+        
     def build_huffman_tree(self, frequency):
         heap = [[weight, [symbol, ""]] for symbol, weight in frequency.items()]
         heapq.heapify(heap)
@@ -20,8 +25,8 @@ class HuffmanCoding:
 
         return sorted(heapq.heappop(heap)[1:], key=lambda p: (len(p[-1]), p))
 
-    def compress(self, input_file_path, output_file_path):
-        with open(input_file_path, 'r') as file:
+    def compress(self):
+        with open(self.input_file_path, 'r') as file:
             text = file.read()
             frequency = Counter(text)
 
@@ -30,13 +35,13 @@ class HuffmanCoding:
         binary_string = ''.join(huffman_code[symbol] for symbol in text)
         compressed = bitarray(binary_string)
 
-        with open(output_file_path, 'wb') as file:
+        with open(self.output_file_path, 'wb') as file:
             compressed.tofile(file)
 
         return frequency, huffman_code, len(text.encode('utf-8')) * 8  # Returning the original size in bits
 
-    def decompress(self, input_file_path, output_file_path, huffman_code):
-        with open(input_file_path, 'rb') as file:
+    def decompress(self):
+        with open(self.input_file_path, 'rb') as file:
             compressed = bitarray()
             compressed.fromfile(file)
 
@@ -52,12 +57,12 @@ class HuffmanCoding:
                 decompressed_text += character
                 current_code = ""
 
-        with open(output_file_path, 'w') as file:
+        with open(self.output_file_path, 'w') as file:
             file.write(decompressed_text)
 
 # Example usage
 huffman = HuffmanCoding()
-input_text_file = "/Users/yoavkatzav/Desktop/MSc Mathematics & Data Science/Semester A 2024/information theory/Information_T.txt"  # Replace with your input file path
+input_text_file = 
 compressed_file = '/Users/yoavkatzav/Desktop/MSc Mathematics & Data Science/Semester A 2024/information theory/compressed.bin'  # Replace with your compressed file path
 decompressed_file = '/Users/yoavkatzav/Desktop/MSc Mathematics & Data Science/Semester A 2024/information theory/decompressed.txt'  # Replace with your output file path
 
